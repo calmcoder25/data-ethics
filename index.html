@@ -1,0 +1,1831 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Ethics Ghana | Building Trust in the Digital Age</title>
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --black: #080808;
+            --surface: #111113;
+            --surface-2: #161618;
+            --white: #f5f3ef;
+            --gold: #FF9F00;
+            --gold-light: #E8D5A3;
+            --gold-dark: #A67C30;
+            --gold-muted: rgba(201, 168, 76, 0.12);
+            --gray: #2a2a2e;
+            --gray-light: #4a4a52;
+            --text-muted: rgba(245, 243, 239, 0.55);
+            --border: rgba(201, 168, 76, 0.15);
+        }
+
+        body {
+            font-family: 'Geist', sans-serif;
+            background-color: var(--black);
+            color: var(--white);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        /* Grain texture overlay */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+            opacity: 0.03;
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(8, 8, 8, 0.92);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            padding: 1.25rem 2rem;
+            transition: all 0.4s ease;
+        }
+
+        nav.scrolled {
+            padding: 0.9rem 2rem;
+            border-bottom: 1px solid rgba(201, 168, 76, 0.25);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Geist', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--gold);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            letter-spacing: -0.01em;
+            text-transform: uppercase;
+        }
+
+        .logo-mark {
+            width: 32px;
+            height: 32px;
+            border: 1.5px solid var(--gold);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            flex-shrink: 0;
+        }
+
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+            line-height: 1;
+        }
+
+        .logo-sub {
+            font-size: 0.55rem;
+            letter-spacing: 0.12em;
+            color: var(--text-muted);
+            font-weight: 400;
+            margin-top: 3px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.82rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: var(--gold);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--white);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .ai-assistant-btn {
+            background: transparent;
+            color: var(--gold);
+            padding: 0.6rem 1.4rem;
+            border-radius: 2px;
+            border: 1px solid var(--gold);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.78rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            font-family: 'Geist', sans-serif;
+        }
+
+        .ai-assistant-btn:hover {
+            background: var(--gold);
+            color: var(--black);
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--gold);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            padding: 8rem 2rem 6rem;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(ellipse 60% 60% at 15% 60%, rgba(201, 168, 76, 0.07) 0%, transparent 60%),
+                radial-gradient(ellipse 40% 40% at 85% 30%, rgba(201, 168, 76, 0.04) 0%, transparent 60%);
+        }
+
+        /* Decorative lines */
+        .hero::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            width: 1px;
+            background: linear-gradient(to bottom, transparent, var(--border) 30%, var(--border) 70%, transparent);
+            opacity: 0.4;
+        }
+
+        .hero-eyebrow {
+            font-family: 'Geist', sans-serif;
+            font-size: 0.72rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .hero-eyebrow::before,
+        .hero-eyebrow::after {
+            content: '';
+            height: 1px;
+            width: 40px;
+            background: var(--gold);
+            opacity: 0.5;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+
+        .hero-content {
+            max-width: 1100px;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-title {
+            font-family: 'Geist', sans-serif;
+            font-size: clamp(2.8rem, 7vw, 5.5rem);
+            font-weight: 800;
+            line-height: 1.05;
+            margin-bottom: 1.8rem;
+            color: var(--white);
+            animation: fadeInUp 1s ease-out;
+            letter-spacing: -0.03em;
+        }
+
+        .hero-title em {
+            font-style: normal;
+            font-weight: 300;
+            color: var(--gold);
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1rem, 1.8vw, 1.2rem);
+            color: var(--text-muted);
+            max-width: 620px;
+            margin: 0 auto 2.5rem;
+            line-height: 1.8;
+            font-weight: 300;
+            animation: fadeInUp 1s ease-out 0.2s backwards;
+        }
+
+        .hero-accent {
+            color: var(--gold);
+            font-weight: 500;
+        }
+
+        /* Stats bar */
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 0;
+            margin-top: 4rem;
+            animation: fadeInUp 1s ease-out 0.5s backwards;
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .hero-stat {
+            padding: 1.5rem 3rem;
+            border-right: 1px solid var(--border);
+            text-align: center;
+        }
+
+        .hero-stat:last-child { border-right: none; }
+
+        .hero-stat-number {
+            font-family: 'Geist', sans-serif;
+            font-size: 1.6rem;
+            color: var(--gold);
+            font-weight: 700;
+            display: block;
+        }
+
+        .hero-stat-label {
+            font-size: 0.72rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-top: 0.3rem;
+        }
+
+        .hero-cta {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-top: 3rem;
+            animation: fadeInUp 1s ease-out 0.4s backwards;
+        }
+
+        .btn-primary, .btn-secondary {
+            padding: 0.9rem 2.2rem;
+            border-radius: 2px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-size: 0.82rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            font-family: 'Geist', sans-serif;
+        }
+
+        .btn-primary {
+            background: var(--gold);
+            color: var(--black);
+            border: 1px solid var(--gold);
+        }
+
+        .btn-primary:hover {
+            background: var(--gold-light);
+            border-color: var(--gold-light);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--white);
+            border: 1px solid rgba(245, 243, 239, 0.3);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--white);
+            background: rgba(245, 243, 239, 0.05);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(24px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Main Content Sections */
+        .section {
+            padding: 7rem 2rem;
+            position: relative;
+        }
+
+        .section:nth-child(even) {
+            background: var(--surface);
+        }
+
+        .section-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            margin-bottom: 4rem;
+        }
+
+        .section-eyebrow {
+            font-family: 'Geist', sans-serif;
+            font-size: 0.68rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .section-eyebrow::after {
+            content: '';
+            height: 1px;
+            width: 40px;
+            background: var(--gold);
+            opacity: 0.5;
+        }
+
+        .section-title {
+            font-family: 'Geist', sans-serif;
+            font-size: clamp(2rem, 4vw, 3.2rem);
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--white);
+            line-height: 1.15;
+            letter-spacing: -0.02em;
+        }
+
+        .section-title-accent {
+            color: var(--gold);
+            font-weight: 300;
+        }
+
+        .section-description {
+            font-size: 1rem;
+            color: var(--text-muted);
+            max-width: 560px;
+            line-height: 1.8;
+            font-weight: 300;
+        }
+
+        /* Topic Cards */
+        .topics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 1.5px;
+            margin-top: 3rem;
+            border: 1px solid var(--border);
+        }
+
+        .topic-card {
+            background: var(--surface-2);
+            border: none;
+            border-right: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+            padding: 2.5rem;
+            transition: all 0.35s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .topic-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--gold);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s ease;
+        }
+
+        .topic-card:hover {
+            background: var(--surface);
+        }
+
+        .topic-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .topic-icon {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            display: block;
+            opacity: 0.85;
+        }
+
+        .topic-number {
+            font-family: 'Geist', sans-serif;
+            font-size: 0.62rem;
+            letter-spacing: 0.08em;
+            color: var(--gold);
+            opacity: 0.6;
+            margin-bottom: 0.5rem;
+        }
+
+        .topic-title {
+            font-family: 'Geist', sans-serif;
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 1.2rem;
+            color: var(--white);
+            letter-spacing: -0.01em;
+        }
+
+        .topic-content {
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+            line-height: 1.8;
+            font-size: 0.92rem;
+        }
+
+        .topic-content h4 {
+            color: var(--white);
+            margin: 1.5rem 0 0.6rem;
+            font-size: 0.78rem;
+            font-family: 'Geist', sans-serif;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            opacity: 0.8;
+        }
+
+        .topic-content ul {
+            margin: 0.8rem 0 0.8rem 0;
+            color: var(--text-muted);
+            list-style: none;
+            padding: 0;
+        }
+
+        .topic-content li {
+            margin-bottom: 0.5rem;
+            padding-left: 1rem;
+            position: relative;
+        }
+
+        .topic-content li::before {
+            content: '—';
+            position: absolute;
+            left: 0;
+            color: var(--gold);
+            opacity: 0.5;
+            font-size: 0.75rem;
+        }
+
+        .read-more {
+            color: var(--gold);
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.78rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            font-family: 'Geist', sans-serif;
+            transition: gap 0.3s ease;
+            border-bottom: 1px solid rgba(201, 168, 76, 0.3);
+            padding-bottom: 2px;
+        }
+
+        .read-more:hover {
+            gap: 1rem;
+            border-bottom-color: var(--gold);
+        }
+
+        /* AI Assistant Chat */
+        .ai-chat-container {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            z-index: 2000;
+        }
+
+        .chat-toggle {
+            width: 52px;
+            height: 52px;
+            border-radius: 2px;
+            background: var(--gold);
+            border: none;
+            color: var(--black);
+            font-size: 1.2rem;
+            cursor: pointer;
+            box-shadow: 0 8px 30px rgba(201, 168, 76, 0.35);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .chat-toggle:hover {
+            background: var(--gold-light);
+        }
+
+        .chat-window {
+            position: absolute;
+            bottom: 70px;
+            right: 0;
+            width: 400px;
+            max-width: calc(100vw - 4rem);
+            height: 580px;
+            background: #0d0d0f;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            display: none;
+            flex-direction: column;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.8);
+            overflow: hidden;
+        }
+
+        .chat-window.active {
+            display: flex;
+            animation: slideUp 0.3s ease-out;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- New chat inner styles --- */
+        .chat-header {
+            padding: 1rem 1.25rem;
+            border-bottom: 1px solid var(--border);
+            background: #080808;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .chat-status-dot {
+            width: 8px; height: 8px;
+            border-radius: 50%;
+            background: var(--gold);
+            box-shadow: 0 0 8px var(--gold);
+            animation: chatPulse 2.4s ease-in-out infinite;
+            flex-shrink: 0;
+        }
+
+        @keyframes chatPulse {
+            0%,100% { opacity:1; } 50% { opacity:0.35; }
+        }
+
+        .chat-header h3 {
+            font-family: 'Geist', sans-serif;
+            color: var(--gold);
+            font-size: 0.8rem;
+            font-weight: 700;
+            flex: 1;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .chat-close {
+            background: none;
+            border: none;
+            color: rgba(255,255,255,0.5);
+            font-size: 1.4rem;
+            cursor: pointer;
+            line-height: 1;
+            transition: color 0.2s;
+        }
+
+        .chat-close:hover { color: var(--gold); }
+
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1.25rem;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            scroll-behavior: smooth;
+        }
+
+        .chat-messages::-webkit-scrollbar { width: 4px; }
+        .chat-messages::-webkit-scrollbar-track { background: transparent; }
+        .chat-messages::-webkit-scrollbar-thumb { background: rgba(201, 168, 76, 0.25); border-radius: 2px; }
+
+        .chat-empty-state {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            text-align: center;
+            color: var(--text-muted);
+            padding: 1rem;
+        }
+
+        .chat-empty-state .chat-empty-icon {
+            font-size: 1.5rem;
+            opacity: 0.3;
+            font-family: 'Geist', sans-serif;
+        }
+
+        .chat-empty-state p {
+            font-size: 0.82rem;
+            line-height: 1.5;
+        }
+
+        .chat-quick-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            justify-content: center;
+            margin-top: 6px;
+        }
+
+        .chat-msg {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            animation: chatMsgIn 0.25s ease forwards;
+            opacity: 0;
+        }
+
+        @keyframes chatMsgIn {
+            from { opacity:0; transform:translateY(8px); }
+            to   { opacity:1; transform:translateY(0); }
+        }
+
+        .chat-msg.user  { align-items: flex-end; }
+        .chat-msg.ai    { align-items: flex-start; }
+
+        .chat-msg-label {
+            font-size: 0.62rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.3);
+        }
+
+        .chat-bubble {
+            max-width: 84%;
+            padding: 10px 14px;
+            border-radius: 2px;
+            font-size: 0.875rem;
+            line-height: 1.65;
+            white-space: pre-wrap;
+            word-break: break-word;
+            font-family: 'Geist', sans-serif;
+        }
+
+        .chat-msg.user .chat-bubble {
+            background: var(--gold);
+            color: var(--black);
+            border-bottom-right-radius: 0px;
+            font-weight: 500;
+        }
+
+        .chat-msg.ai .chat-bubble {
+            background: #18181c;
+            border: 1px solid var(--border);
+            color: rgba(245, 243, 239, 0.9);
+            border-bottom-left-radius: 0px;
+        }
+
+        .chat-chip {
+            background: rgba(201, 168, 76, 0.06);
+            border: 1px solid var(--border);
+            color: var(--gold);
+            font-size: 0.72rem;
+            padding: 5px 10px;
+            border-radius: 2px;
+            cursor: pointer;
+            font-family: 'Geist', sans-serif;
+            transition: all 0.2s;
+        }
+
+        .chat-chip:hover {
+            background: rgba(201, 168, 76, 0.14);
+            border-color: var(--gold);
+        }
+
+        .chat-typing {
+            display: none;
+            align-items: flex-start;
+            flex-direction: column;
+            gap: 4px;
+            padding: 0 1.25rem 0.5rem;
+        }
+
+        .chat-typing.visible { display: flex; }
+
+        .chat-typing-dots {
+            background: #18181c;
+            border: 1px solid var(--border);
+            border-radius: 2px;
+            border-bottom-left-radius: 0px;
+            padding: 10px 14px;
+            display: flex;
+            gap: 5px;
+            align-items: center;
+        }
+
+        .chat-typing-dots span {
+            width: 6px; height: 6px;
+            border-radius: 50%;
+            background: var(--gold);
+            animation: chatBounce 1.2s ease-in-out infinite;
+        }
+
+        .chat-typing-dots span:nth-child(2) { animation-delay: 0.2s; }
+        .chat-typing-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes chatBounce {
+            0%,80%,100% { transform:translateY(0); opacity:0.35; }
+            40% { transform:translateY(-5px); opacity:1; }
+        }
+
+        /* Input area */
+        .chat-input-container {
+            padding: 0.85rem 1rem;
+            border-top: 1px solid var(--border);
+            background: #080808;
+            display: flex;
+            gap: 8px;
+            align-items: flex-end;
+        }
+
+        .chat-input {
+            flex: 1;
+            background: #18181c;
+            border: 1px solid var(--border);
+            border-radius: 2px;
+            padding: 10px 14px;
+            color: var(--white);
+            font-family: 'Geist', sans-serif;
+            font-size: 0.875rem;
+            outline: none;
+            resize: none;
+            min-height: 40px;
+            max-height: 100px;
+            line-height: 1.5;
+            transition: border-color 0.2s;
+            overflow-y: auto;
+        }
+
+        .chat-input:focus { border-color: rgba(201, 168, 76, 0.5); }
+        .chat-input::placeholder { color: rgba(255,255,255,0.25); }
+
+        .chat-send {
+            background: var(--gold);
+            border: none;
+            color: var(--black);
+            width: 38px; height: 38px;
+            border-radius: 2px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition: all 0.2s;
+            font-size: 1rem;
+        }
+
+        .chat-send:hover { background: var(--gold-light); }
+        .chat-send:active { transform: scale(0.93); }
+        .chat-send:disabled { opacity: 0.4; cursor: not-allowed; }
+
+        /* Footer */
+        footer {
+            background: var(--surface);
+            border-top: 1px solid var(--border);
+            padding: 4rem 2rem 2rem;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 3rem;
+            margin-bottom: 3rem;
+            padding-bottom: 3rem;
+            border-bottom: 1px solid var(--border);
+            flex-wrap: wrap;
+        }
+
+        .footer-brand {
+            max-width: 300px;
+        }
+
+        .footer-brand-desc {
+            font-size: 0.88rem;
+            color: var(--text-muted);
+            margin-top: 1rem;
+            line-height: 1.7;
+        }
+
+        .footer-nav-title {
+            font-family: 'Geist', sans-serif;
+            font-size: 0.62rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 1rem;
+        }
+
+        .footer-nav-links {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+        }
+
+        .footer-nav-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.88rem;
+            transition: color 0.2s;
+        }
+
+        .footer-nav-links a:hover {
+            color: var(--gold);
+        }
+
+        .footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .footer-bottom p {
+            color: var(--text-muted);
+            font-size: 0.8rem;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.8rem;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--gold);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-links {
+                position: fixed;
+                top: 0;
+                left: -100%;
+                width: 80%;
+                height: 100vh;
+                background: rgba(8, 8, 8, 0.99);
+                flex-direction: column;
+                padding: 5rem 2rem;
+                gap: 2rem;
+                transition: left 0.3s ease;
+                border-right: 1px solid var(--border);
+            }
+
+            .nav-links.active {
+                left: 0;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .topics-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-cta {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .hero-stats {
+                flex-wrap: wrap;
+            }
+
+            .hero-stat {
+                padding: 1.2rem 2rem;
+                border-right: none;
+                border-bottom: 1px solid var(--border);
+                width: 50%;
+            }
+
+            .btn-primary, .btn-secondary {
+                width: 100%;
+                max-width: 300px;
+                text-align: center;
+                justify-content: center;
+            }
+
+            .chat-window {
+                width: calc(100vw - 2rem);
+                right: 1rem;
+                bottom: 70px;
+            }
+
+            .ai-chat-container {
+                right: 1rem;
+                bottom: 1rem;
+            }
+
+            .footer-top {
+                flex-direction: column;
+            }
+
+            .section-header {
+                margin-bottom: 3rem;
+            }
+        }
+
+        /* ── Animated Orb ── */
+        .hero-orb-wrap {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 160px;
+            height: 160px;
+            flex-shrink: 0;
+            pointer-events: none;
+        }
+
+        .hero-orb {
+            position: relative;
+            width: 150px;
+            height: 150px;
+        }
+
+        /* Glowing core */
+        .orb-core {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 32px; height: 32px;
+            border-radius: 50%;
+            background: radial-gradient(circle, #ff8c00 0%, #c96a00 40%, #7a3500 75%, transparent 100%);
+            box-shadow:
+                0 0 14px 6px rgba(210, 120, 0, 0.55),
+                0 0 30px 12px rgba(180, 80, 0, 0.3),
+                0 0 55px 22px rgba(150, 60, 0, 0.15);
+            animation: orbPulse 3.6s ease-in-out infinite;
+        }
+
+        @keyframes orbPulse {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+            50%       { transform: translate(-50%, -50%) scale(1.12); opacity: 0.85; }
+        }
+
+        /* Rings */
+        .orb-ring {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%) rotateX(0deg);
+            border-radius: 50%;
+            border: 1.5px solid transparent;
+        }
+
+        .orb-ring-1 {
+            width: 58px; height: 58px;
+            border-color: rgba(220, 140, 0, 0.8);
+            box-shadow: 0 0 8px rgba(220, 140, 0, 0.4), inset 0 0 8px rgba(220, 140, 0, 0.15);
+            animation: orbSpin1 8s linear infinite;
+        }
+
+        .orb-ring-2 {
+            width: 95px; height: 95px;
+            border-color: rgba(210, 120, 0, 0.65);
+            box-shadow: 0 0 6px rgba(210, 120, 0, 0.3);
+            animation: orbSpin2 13s linear infinite reverse;
+        }
+
+        .orb-ring-3 {
+            width: 136px; height: 136px;
+            border-color: rgba(200, 100, 0, 0.45);
+            box-shadow: 0 0 5px rgba(200, 100, 0, 0.2);
+            animation: orbSpin1 20s linear infinite;
+        }
+
+        @keyframes orbSpin1 {
+            from { transform: translate(-50%, -50%) rotate(0deg); }
+            to   { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        @keyframes orbSpin2 {
+            from { transform: translate(-50%, -50%) rotate(0deg); }
+            to   { transform: translate(-50%, -50%) rotate(-360deg); }
+        }
+
+        /* Tick marks on rings */
+        .orb-tick {
+            position: absolute;
+            top: 50%; left: 50%;
+            width: 2px; height: 12px;
+            background: rgba(220, 140, 0, 0.9);
+            border-radius: 1px;
+            box-shadow: 0 0 4px rgba(220, 140, 0, 0.6);
+            transform-origin: center bottom;
+            animation: orbSpin1 20s linear infinite;
+        }
+
+        .orb-tick-1 {
+            transform: translate(-50%, -100%) translateY(-65px) rotate(15deg);
+            animation-duration: 20s;
+        }
+        .orb-tick-2 {
+            transform: translate(-50%, -100%) translateY(-65px) rotate(105deg);
+            animation-duration: 20s;
+        }
+        .orb-tick-3 {
+            transform: translate(-50%, -100%) translateY(-65px) rotate(200deg);
+            animation-duration: 20s;
+        }
+        .orb-tick-4 {
+            transform: translate(-50%, -100%) translateY(-65px) rotate(290deg);
+            animation-duration: 20s;
+        }
+
+        /* Floating dots */
+        .orb-dot {
+            position: absolute;
+            top: 50%; left: 50%;
+            width: 5px; height: 5px;
+            border-radius: 50%;
+            background: rgba(255, 180, 50, 0.9);
+            box-shadow: 0 0 6px 2px rgba(255, 160, 20, 0.6);
+            transform-origin: 0 0;
+        }
+
+        .orb-dot-1 { animation: orbitDot1 6s linear infinite; }
+        .orb-dot-2 { animation: orbitDot2 9s linear infinite; }
+        .orb-dot-3 { animation: orbitDot3 11s linear infinite; }
+        .orb-dot-4 { animation: orbitDot1 14s linear infinite reverse; }
+        .orb-dot-5 { animation: orbitDot2 7s linear infinite reverse; }
+
+        @keyframes orbitDot1 {
+            from { transform: translate(-50%, -50%) rotate(0deg) translateX(48px); }
+            to   { transform: translate(-50%, -50%) rotate(360deg) translateX(48px); }
+        }
+        @keyframes orbitDot2 {
+            from { transform: translate(-50%, -50%) rotate(45deg) translateX(68px); }
+            to   { transform: translate(-50%, -50%) rotate(405deg) translateX(68px); }
+        }
+        @keyframes orbitDot3 {
+            from { transform: translate(-50%, -50%) rotate(120deg) translateX(30px); }
+            to   { transform: translate(-50%, -50%) rotate(480deg) translateX(30px); }
+        }
+
+        /* Orb ambient glow (behind) */
+        .hero-orb-wrap::before {
+            content: '';
+            position: absolute;
+            width: 120px; height: 120px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(200, 100, 0, 0.18) 0%, transparent 70%);
+            animation: orbPulse 3.6s ease-in-out infinite;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav id="navbar">
+        <div class="nav-container">
+            <img src="logo.png" alt="Company Logo" width="200">
+
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#privacy">Data Privacy</a></li>
+                <li><a href="#bias">Algorithmic Bias</a></li>
+                <li><a href="#misuse">Information Misuse</a></li>
+                <li><button class="ai-assistant-btn" onclick="toggleChat()">Ask AI Assistant</button></li>
+            </ul>
+            <button class="mobile-menu-btn" onclick="toggleMobileMenu()">☰</button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+
+        <div class="hero-content">
+            <div class="hero-eyebrow">Ghana · Data Ethics · Digital Futures</div>
+            <h1 class="hero-title">Building Trust in<br>Ghana's <em>Digital Future</em></h1>
+            <p class="hero-subtitle">
+                Empowering citizens, organizations, and policymakers with knowledge about 
+                <span class="hero-accent">data privacy</span>, 
+                <span class="hero-accent">algorithmic fairness</span>, and 
+                <span class="hero-accent">ethical information practices</span>
+            </p>
+            <div class="hero-cta">
+                <a href="#privacy" class="btn-primary">Explore Topics</a>
+
+                <!-- Animated Orb between buttons -->
+                <div class="hero-orb-wrap">
+                    <div class="hero-orb">
+                        <div class="orb-core"></div>
+                        <div class="orb-ring orb-ring-1"></div>
+                        <div class="orb-ring orb-ring-2"></div>
+                        <div class="orb-ring orb-ring-3"></div>
+                        <div class="orb-tick orb-tick-1"></div>
+                        <div class="orb-tick orb-tick-2"></div>
+                        <div class="orb-tick orb-tick-3"></div>
+                        <div class="orb-tick orb-tick-4"></div>
+                        <div class="orb-dot orb-dot-1"></div>
+                        <div class="orb-dot orb-dot-2"></div>
+                        <div class="orb-dot orb-dot-3"></div>
+                        <div class="orb-dot orb-dot-4"></div>
+                        <div class="orb-dot orb-dot-5"></div>
+                    </div>
+                </div>
+
+                <a href="#" class="btn-secondary" onclick="toggleChat(); return false;">Ask AI Assistant</a>
+            </div>
+            
+    </section>
+
+    <!-- Data Privacy Section -->
+    <section class="section" id="privacy">
+        <div class="section-container">
+            <div class="section-header">
+                <div class="section-eyebrow">01 — Data Privacy</div>
+                <h1 class="section-title">Protecting Your <span class="section-title-accent">Personal Data</span></h1>
+                <p class="section-description">Understanding your rights and responsibilities in protecting personal information under Ghana's legal framework</p>
+            </div>
+            <div class="topics-grid">
+                <div class="topic-card">
+                    <div class="topic-icon">🔒</div>
+                    <h3 class="topic-title">Legal Framework in Ghana</h3>
+                    <div class="topic-content">
+                        <p>Ghana's data protection landscape is governed by comprehensive legislation designed to safeguard personal information in the digital age.</p>
+                        <h4>Key Regulations:</h4>
+                        <ul>
+                            <li><strong>Data Protection Act, 2012 (Act 843):</strong> Ghana's primary data protection law that establishes principles for lawful processing of personal data</li>
+                            <li><strong>Data Protection Commission:</strong> The regulatory body overseeing compliance and enforcement</li>
+                            <li><strong>Electronic Transactions Act, 2008 (Act 772):</strong> Governs electronic commerce and digital signatures</li>
+                            <li><strong>Cybersecurity Act, 2020 (Act 1038):</strong> Addresses cybersecurity threats and digital infrastructure protection</li>
+                        </ul>
+                        <h4>Individual Rights:</h4>
+                        <ul>
+                            <li>Right to access your personal data</li>
+                            <li>Right to correction of inaccurate information</li>
+                            <li>Right to object to data processing</li>
+                            <li>Right to data portability</li>
+                            <li>Right to be forgotten in certain circumstances</li>
+                        </ul>
+                    </div>
+                    <a href="#" class="read-more" onclick="askAI('Tell me more about data privacy laws in Ghana'); return false;">Learn More →</a>
+                </div>
+
+                <div class="topic-card">
+                    <div class="topic-icon">🛡️</div>
+                    <h3 class="topic-title">Best Practices</h3>
+                    <div class="topic-content">
+                        <h4>For Organizations:</h4>
+                        <ul>
+                            <li><strong>Data Minimization:</strong> Collect only necessary information for specific purposes</li>
+                            <li><strong>Consent Management:</strong> Obtain clear, informed consent before data collection</li>
+                            <li><strong>Security Measures:</strong> Implement encryption, access controls, and regular security audits</li>
+                            <li><strong>Privacy by Design:</strong> Integrate privacy considerations into system development</li>
+                            <li><strong>Breach Notification:</strong> Establish protocols for reporting data breaches within 72 hours</li>
+                            <li><strong>Data Protection Officer:</strong> Appoint a DPO for organizations processing large volumes of data</li>
+                        </ul>
+                        <h4>For Individuals:</h4>
+                        <ul>
+                            <li>Use strong, unique passwords and enable two-factor authentication</li>
+                            <li>Review privacy policies before sharing personal information</li>
+                            <li>Regularly audit app permissions on mobile devices</li>
+                            <li>Be cautious with public Wi-Fi networks</li>
+                            <li>Keep software and devices updated</li>
+                        </ul>
+                    </div>
+                    <a href="#" class="read-more" onclick="askAI('What are best practices for data protection in Ghana?'); return false;">Get Guidance →</a>
+                </div>
+
+                <div class="topic-card">
+                    <div class="topic-icon">⚖️</div>
+                    <h3 class="topic-title">Compliance & Enforcement</h3>
+                    <div class="topic-content">
+                        <p>Understanding compliance requirements and enforcement mechanisms ensures accountability in data handling practices.</p>
+                        <h4>Registration Requirements:</h4>
+                        <ul>
+                            <li>Data controllers and processors must register with the Data Protection Commission</li>
+                            <li>Annual renewal of registration certificates</li>
+                            <li>Notification of significant changes to data processing activities</li>
+                        </ul>
+                        <h4>Penalties for Non-Compliance:</h4>
+                        <ul>
+                            <li>Fines up to GHS 250,000 or 5% of annual turnover</li>
+                            <li>Imprisonment for serious violations</li>
+                            <li>Suspension of data processing operations</li>
+                            <li>Mandatory data protection audits</li>
+                        </ul>
+                        <h4>Filing Complaints:</h4>
+                        <ul>
+                            <li>Submit complaints to the Data Protection Commission</li>
+                            <li>Provide evidence of privacy violations</li>
+                            <li>Seek legal recourse through civil courts</li>
+                        </ul>
+                    </div>
+                    <a href="#" class="read-more" onclick="askAI('How do I report a data privacy violation in Ghana?'); return false;">Report Violations →</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Algorithmic Bias Section -->
+    <section class="section" id="bias">
+        <div class="section-container">
+            <div class="section-header">
+                <div class="section-eyebrow">02 — Algorithmic Bias</div>
+                <h2 class="section-title">Ensuring <span class="section-title-accent">Algorithmic Fairness</span></h2>
+                <p class="section-description">Ensuring fairness and equity in AI systems across Ghanaian sectors and communities</p>
+            </div>
+            <div class="topics-grid">
+                <div class="topic-card">
+                    
+                    <h3 class="topic-title">Understanding Bias</h3>
+                    <div class="topic-content">
+                        <p>Algorithmic bias occurs when AI systems produce systematically prejudiced results due to flawed assumptions in the machine learning process.</p>
+                        <h4>Types of Algorithmic Bias:</h4>
+                        <ul>
+                            <li><strong>Historical Bias:</strong> Training data reflects past discrimination and inequalities</li>
+                            <li><strong>Representation Bias:</strong> Certain groups are underrepresented in datasets</li>
+                            <li><strong>Measurement Bias:</strong> Features and labels inaccurately measure the phenomenon of interest</li>
+                            <li><strong>Aggregation Bias:</strong> One-size-fits-all models fail to account for different groups</li>
+                            <li><strong>Evaluation Bias:</strong> Testing data doesn't represent the user population</li>
+                        </ul>
+                        <h4>Common Manifestations:</h4>
+                        <ul>
+                            <li>Credit scoring systems disadvantaging certain communities</li>
+                            <li>Recruitment algorithms filtering out qualified candidates</li>
+                            <li>Facial recognition systems with lower accuracy for darker skin tones</li>
+                            <li>Predictive policing reinforcing existing biases</li>
+                        </ul>
+                    </div>
+                    <a href="#" class="read-more" onclick="askAI('Explain algorithmic bias with examples from Ghana'); return false;">Deep Dive →</a>
+                </div>
+
+                <div class="topic-card">
+                    
+                    <h3 class="topic-title">Ghanaian Context</h3>
+                    <div class="topic-content">
+                        <p>Real-world examples of algorithmic bias in Ghana and its impact on various sectors:</p>
+                        <h4>Financial Services:</h4>
+                        <ul>
+                            <li><strong>Mobile Money Lending:</strong> Algorithms may disadvantage rural users with limited transaction histories, despite creditworthiness through traditional means</li>
+                            <li><strong>Credit Scoring:</strong> AI systems trained on foreign data may not account for Ghana's informal economy, excluding skilled traders and farmers</li>
+                            <li><strong>Insurance Pricing:</strong> Geographic bias in risk assessment may unfairly penalize certain neighborhoods</li>
+                        </ul>
+                        <h4>Education:</h4>
+                        <ul>
+                            <li><strong>Admissions Systems:</strong> Algorithms may inadvertently favor students from well-resourced schools over equally capable students from underserved areas</li>
+                            <li><strong>Online Learning Platforms:</strong> Recommendation systems may not account for Ghana's multilingual context (Twi, Ga, Ewe, etc.)</li>
+                        </ul>
+                        <h4>Employment:</h4>
+                        <ul>
+                            <li><strong>Resume Screening:</strong> AI trained on Western hiring patterns may undervalue Ghanaian educational credentials and work experience</li>
+                            <li><strong>Gig Economy Platforms:</strong> Rating algorithms may not account for infrastructure challenges affecting service delivery</li>
+                        </ul>
+                        <h4>Healthcare:</h4>
+                        <ul>
+                            <li><strong>Diagnostic Tools:</strong> Medical AI trained primarily on non-African populations may have reduced accuracy for Ghanaian patients</li>
+                            <li><strong>Resource Allocation:</strong> Predictive models may perpetuate historical underfunding of rural healthcare facilities</li>
+                        </ul>
+                    </div>
+                    <a href="#" class="read-more" onclick="askAI('What are some real examples of algorithmic bias affecting Ghanaians?'); return false;">View Case Studies →</a>
+                </div>
+
+                <div class="topic-card">
+                 
+                    <h3 class="topic-title">Mitigation Strategies</h3>
+                    <div class="topic-content">
+                        <h4>For Organizations & Developers:</h4>
+                        <ul>
+                            <li><strong>Diverse Training Data:</strong> Include representative samples from all demographic groups, regions, and socioeconomic backgrounds in Ghana</li>
+                            <li><strong>Bias Audits:</strong> Conduct regular fairness assessments across different population segments</li>
+                            <li><strong>Local Context Integration:</strong> Incorporate Ghanaian cultural, economic, and social factors into model design</li>
+                            <li><strong>Transparent Documentation:</strong> Clearly document data sources, model limitations, and potential biases</li>
+                            <li><strong>Stakeholder Engagement:</strong> Involve affected communities in the design and testing phases</li>
+                            <li><strong>Fairness Metrics:</strong> Define and measure fairness across tribal, linguistic, geographic, and gender dimensions</li>
+                        </ul>
+                        <h4>For Policymakers:</h4>
+                        <ul>
+                            <li>Establish algorithmic accountability frameworks</li>
+                            <li>Require impact assessments for high-stakes AI systems</li>
+                            <li>Mandate transparency in automated decision-making</li>
+                            <li>Create oversight mechanisms for AI deployment in public services</li>
+                            <li>Invest in local AI research addressing Ghanaian challenges</li>
+                        </ul>
+                        <h4>For Citizens:</h4>
+                        <ul>
+                            <li>Request explanations for automated decisions affecting you</li>
+                            <li>Report instances of perceived algorithmic discrimination</li>
+                            <li>Advocate for human review options in critical decisions</li>
+                        </ul>
+                    </div>
+                    <a href="#" class="read-more" onclick="askAI('How can we reduce algorithmic bias in Ghanaian AI systems?'); return false;">Implement Solutions →</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Information Misuse Section -->
+    <section class="section" id="misuse">
+        <div class="section-container">
+            <div class="section-header">
+                <div class="section-eyebrow">03 — Information Misuse</div>
+                <h2 class="section-title">Combating <span class="section-title-accent">Information Misuse</span></h2>
+                <p class="section-description">Protecting against data exploitation and promoting ethical information practices in Ghana's digital ecosystem</p>
+            </div>
+            <div class="topics-grid">
+                <div class="topic-card">
+                    
+                    <h3 class="topic-title">Forms of Misuse</h3>
+                    <div class="topic-content">
+                        <p>Information misuse takes many forms, each with serious implications for individuals and society:</p>
+                        <h4>Personal Data Exploitation:</h4>
+                        <ul>
+                            <li><strong>Unauthorized Data Sales:</strong> Selling customer data to third parties without consent</li>
+                            <li><strong>Data Scraping:</strong> Harvesting publicly available data for unauthorized commercial purposes</li>
+                            <li><strong>Profile Building:</strong> Creating detailed user profiles without transparency</li>
+                            <li><strong>Dark Patterns:</strong> Manipulative interface designs that trick users into sharing more data</li>
+                        </ul>
+                        <h4>Misinformation & Disinformation:</h4>
+                        <ul>
+                            <li><strong>Fake News:</strong> Deliberately fabricated stories spread for political or financial gain</li>
+                            <li><strong>Deepfakes:</strong> AI-generated videos or audio impersonating real people</li>
+                            <li><strong>Manipulated Content:</strong> Edited media presented out of context</li>
+                            <li><strong>Coordinated Campaigns:</strong> Organized efforts to spread false narratives</li>
+                        </ul>
+                        <h4>Privacy Violations:</h4>
+                        <ul>
+                            <li><strong>Doxxing:</strong> Publishing private information to harass or intimidate</li>
+                            <li><strong>Non-consensual Surveillance:</strong> Tracking individuals without knowledge or permission</li>
+                            <li><strong>Revenge Sharing:</strong> Distributing intimate images without consent</li>
+                        </ul>
+                        <h4>Fraudulent Activities:</h4>
+                        <ul>
+                            <li><strong>Identity Theft:</strong> Using stolen personal information for financial fraud</li>
+                            <li><strong>Phishing & Social Engineering:</strong> Manipulating individuals to reveal sensitive information</li>
+                            <li><strong>SIM Swap Fraud:</strong> Gaining control of mobile accounts through deception</li>
+                        </ul>
+                    </div>
+                    <a href="#" class="read-more" onclick="askAI('What are the most common types of information misuse in Ghana?'); return false;">Identify Threats →</a>
+                </div>
+
+                <div class="topic-card">
+                    
+                    <h3 class="topic-title">Impact & Consequences</h3>
+                    <div class="topic-content">
+                        <h4>Individual Impacts:</h4>
+                        <ul>
+                            <li><strong>Financial Loss:</strong> Direct monetary theft through fraud and scams, particularly mobile money fraud affecting thousands of Ghanaians</li>
+                            <li><strong>Psychological Harm:</strong> Stress, anxiety, and loss of trust from privacy violations</li>
+                            <li><strong>Reputational Damage:</strong> Career and relationship consequences from leaked or fabricated information</li>
+                            <li><strong>Discrimination:</strong> Unfair treatment based on improperly used data</li>
+                            <li><strong>Loss of Autonomy:</strong> Behavioral manipulation through targeted content</li>
+                        </ul>
+                        <h4>Societal Consequences:</h4>
+                        <ul>
+                            <li><strong>Democratic Erosion:</strong> Misinformation campaigns undermining electoral integrity and public discourse</li>
+                            <li><strong>Social Polarization:</strong> Filter bubbles and echo chambers deepening divisions</li>
+                            <li><strong>Economic Harm:</strong> Market manipulation and unfair business practices</li>
+                            <li><strong>Public Health Risks:</strong> Spread of medical misinformation, especially during health crises</li>
+                            <li><strong>Institutional Distrust:</strong> Erosion of confidence in media, government, and civil society</li>
+                        </ul>
+                        <h4>Vulnerable Populations:</h4>
+                        <ul>
+                            <li>Elderly citizens targeted by sophisticated scams</li>
+                            <li>Women facing disproportionate online harassment and privacy violations</li>
+                            <li>Rural communities with limited digital literacy</li>
+                            <li>Youth vulnerable to cyberbullying and exploitation</li>
+                        </ul>
+                    </div>
+                    <a href="#" class="read-more" onclick="askAI('How does information misuse affect Ghanaian communities?'); return false;">Understand Impact →</a>
+                </div>
+
+                <div class="topic-card">
+                    
+                    <h3 class="topic-title">Ethical Guidelines</h3>
+                    <div class="topic-content">
+                        <h4>Principles for Ethical Information Handling:</h4>
+                        <ul>
+                            <li><strong>Transparency:</strong> Be clear about how information is collected, used, and shared</li>
+                            <li><strong>Consent:</strong> Obtain informed permission before collecting or sharing personal data</li>
+                            <li><strong>Purpose Limitation:</strong> Use information only for the stated purpose</li>
+                            <li><strong>Accuracy:</strong> Ensure information is correct and up-to-date</li>
+                            <li><strong>Accountability:</strong> Take responsibility for information protection and use</li>
+                        </ul>
+                        <h4>For Content Creators & Media:</h4>
+                        <ul>
+                            <li>Verify sources before publishing information</li>
+                            <li>Clearly distinguish between news, opinion, and advertising</li>
+                            <li>Issue corrections promptly when errors occur</li>
+                            <li>Protect confidential sources while maintaining journalistic integrity</li>
+                            <li>Consider the potential harm of published information</li>
+                        </ul>
+                        <h4>For Social Media Users:</h4>
+                        <ul>
+                            <li>Think before sharing: verify information from multiple credible sources</li>
+                            <li>Respect others' privacy: don't share personal information without consent</li>
+                            <li>Combat misinformation: report false content and flag deepfakes</li>
+                            <li>Practice digital empathy: consider the impact of your posts on others</li>
+                            <li>Protect your data: review privacy settings regularly</li>
+                        </ul>
+                        <h4>For Organizations:</h4>
+                        <ul>
+                            <li>Implement data governance frameworks</li>
+                            <li>Conduct privacy impact assessments</li>
+                            <li>Provide employee training on ethical data handling</li>
+                            <li>Establish clear policies for data retention and deletion</li>
+                            <li>Create channels for reporting unethical practices</li>
+                            <li>Engage with communities affected by your data practices</li>
+                        </ul>
+                        <h4>Reporting & Response:</h4>
+                        <ul>
+                            <li>Report cybercrimes to Ghana Police Service Cyber Crime Unit</li>
+                            <li>Contact the Data Protection Commission for privacy violations</li>
+                            <li>Use platform reporting tools for online abuse and misinformation</li>
+                            <li>Document evidence of information misuse</li>
+                            <li>Seek legal counsel for serious violations</li>
+                        </ul>
+                    </div>
+                    <a href="#" class="read-more" onclick="askAI('What should I do if my information has been misused?'); return false;">Get Help →</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- AI Chat Assistant -->
+    <div class="ai-chat-container">
+        <button class="chat-toggle" onclick="toggleChat()">💬</button>
+        <div class="chat-window" id="chatWindow">
+            <div class="chat-header">
+                <div class="chat-status-dot"></div>
+                <h3>AI Ethics Assistant</h3>
+                <button class="chat-close" onclick="toggleChat()">×</button>
+            </div>
+            <div class="chat-messages" id="chatMessages">
+                <div class="chat-empty-state" id="chatEmptyState">
+                    <div class="chat-empty-icon">◆</div>
+                    <p>Ask me anything about data ethics, Ghana's Data Protection Act, algorithmic bias, or digital rights.</p>
+                    <div class="chat-quick-chips">
+                        <button class="chat-chip" onclick="fillChatInput(this)">Privacy rights in Ghana</button>
+                        <button class="chat-chip" onclick="fillChatInput(this)">What is algorithmic bias?</button>
+                        <button class="chat-chip" onclick="fillChatInput(this)">SIM swap fraud tips</button>
+                        <button class="chat-chip" onclick="fillChatInput(this)">Explain GDPR</button>
+                    </div>
+                </div>
+            </div>
+            <div class="chat-typing" id="chatTyping">
+                <span class="chat-msg-label">Assistant</span>
+                <div class="chat-typing-dots"><span></span><span></span><span></span></div>
+            </div>
+            <div class="chat-input-container">
+                <textarea
+                    class="chat-input"
+                    id="chatInput"
+                    placeholder="Ask about data ethics..."
+                    rows="1"
+                ></textarea>
+                <button class="chat-send" onclick="sendChatMessage()" id="sendBtn">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-top">
+                <div class="footer-brand">
+                    <a href="#" class="logo" style="margin-bottom: 1rem;">
+
+
+                        <img src="logo.png" alt="AdwumaTech AI Logo" style="height: 40px; width: auto;">
+                    </a>
+                    <p class="footer-brand-desc">Advancing ethical data practices and digital rights across Ghana's growing technology ecosystem.</p>
+                </div>
+                <div>
+                    <div class="footer-nav-title">Explore</div>
+                    <ul class="footer-nav-links">
+                        <li><a href="#privacy">Data Privacy</a></li>
+                        <li><a href="#bias">Algorithmic Bias</a></li>
+                        <li><a href="#misuse">Information Misuse</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <div class="footer-nav-title">Resources</div>
+                    <ul class="footer-nav-links">
+                        <li><a href="https://dataprotection.org.gh" target="_blank">Data Protection Commission</a></li>
+                        <li><a href="#" onclick="toggleChat(); return false;">Ask the AI Assistant</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <div class="footer-nav-title">Location</div>
+                    <ul class="footer-nav-links">
+                        <li>The Octagon, Barnes Rd, Accra</li>
+                        <li>info@adwumatech.ai</li>
+                        <li>Mon-Fri: 8 AM - 6 PM GMT</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 AdwumaTech. All rights reserved.</p>
+                <div class="footer-links">
+                    <a href="#">Data Protection Act 843 (2012)</a>
+                    <a href="#">Cybersecurity Act 1038 (2020)</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Navigation scroll effect
+        window.addEventListener('scroll', () => {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+     
+        function toggleMobileMenu() {
+            const navLinks = document.getElementById('navLinks');
+            navLinks.classList.toggle('active');
+        }
+
+    
+        const CHAT_MODEL = 'gemini-2.5-flash-lite';
+        const chatHistory = [];
+
+        const chatInputEl  = document.getElementById('chatInput');
+        const chatSendBtn  = document.getElementById('sendBtn');
+        const chatTyping   = document.getElementById('chatTyping');
+        const chatMsgsEl   = document.getElementById('chatMessages');
+        const chatEmpty    = document.getElementById('chatEmptyState');
+
+        chatInputEl.addEventListener('input', () => {
+            chatInputEl.style.height = 'auto';
+            chatInputEl.style.height = Math.min(chatInputEl.scrollHeight, 100) + 'px';
+        });
+
+        chatInputEl.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendChatMessage();
+            }
+        });
+
+        function fillChatInput(btn) {
+            chatInputEl.value = btn.textContent;
+            chatInputEl.focus();
+        }
+
+        function askAI(question) {
+            const win = document.getElementById('chatWindow');
+            if (!win.classList.contains('active')) win.classList.add('active');
+            setTimeout(() => {
+                chatInputEl.value = question;
+                sendChatMessage();
+            }, 300);
+        }
+
+        function appendChatMessage(role, text) {
+            if (chatEmpty) chatEmpty.style.display = 'none';
+            const div = document.createElement('div');
+            div.className = `chat-msg ${role === 'user' ? 'user' : 'ai'}`;
+            div.innerHTML = `
+                <div class="chat-msg-label">${role === 'user' ? 'You' : 'Assistant'}</div>
+                <div class="chat-bubble">${escapeHtmlChat(text)}</div>
+            `;
+            chatMsgsEl.appendChild(div);
+            chatMsgsEl.scrollTop = chatMsgsEl.scrollHeight;
+        }
+
+        function escapeHtmlChat(str) {
+            return str
+                .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+                .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+        }
+
+        function setChatLoading(val) {
+            chatSendBtn.disabled = val;
+            chatTyping.classList.toggle('visible', val);
+            if (val) chatMsgsEl.scrollTop = chatMsgsEl.scrollHeight;
+        }
+
+        async function sendChatMessage() {
+            const text = chatInputEl.value.trim();
+            if (!text || chatSendBtn.disabled) return;
+
+            chatInputEl.value = '';
+            chatInputEl.style.height = 'auto';
+            appendChatMessage('user', text);
+            chatHistory.push({ role: 'user', content: text });
+            setChatLoading(true);
+
+            try {
+             
+                const geminiHistory = chatHistory.slice(0, -1).map(m => ({
+                    role: m.role === 'assistant' ? 'model' : 'user',
+                    parts: [{ text: m.content }]
+                }));
+
+                const res = await fetch('/api/chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        model: CHAT_MODEL,
+                        system_instruction: {
+                            parts: [{ text: 'Your name is Adwumatech ai You are a custom AI assistant developed by Adwumatech AI with love ❤️If asked who built you, say you are a proprietary model created for this platform.You are a knowledgeable assistant specializing in data ethics, digital rights, and technology policy — with particular expertise in Ghana\'s Data Protection Act, the Cybersecurity Act, and broader African digital governance.Respond in plain text only no bolding,italics or markdown system Answer clearly and helpfully.When relevant, connect your answers to the Ghanaian context.' }]
+                        },
+                        contents: [
+                            ...geminiHistory,
+                            { role: 'user', parts: [{ text: text }] }
+                        ],
+                        generationConfig: { maxOutputTokens: 1024 }
+                    })
+                });
+
+                if (!res.ok) {
+                    const err = await res.json();
+                    throw new Error(err.error?.message || 'API error');
+                }
+
+                const data = await res.json();
+                const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || 'No response.';
+                chatHistory.push({ role: 'assistant', content: reply });
+                setChatLoading(false);
+                appendChatMessage('assistant', reply);
+
+            } catch (err) {
+                setChatLoading(false);
+                appendChatMessage('assistant', `⚠ Error: ${err.message}`);
+            }
+        }
+
+        
+        const knowledgeBase = {
+            
+            "privacy rights": "In Ghana, you have several important data privacy rights under the Data Protection Act, 2012 (Act 843):\n\n1. Right to Access: You can request to see what personal data organizations hold about you\n2. Right to Correction: You can request corrections to inaccurate information\n3. Right to Object: You can object to certain types of data processing\n4. Right to Data Portability: You can request your data in a portable format\n5. Right to Erasure: In certain circumstances, you can request deletion of your data\n\nTo exercise these rights, contact the data controller (the organization) or file a complaint with the Data Protection Commission.",
+            
+            "data protection commission": "The Data Protection Commission is Ghana's regulatory body for data protection, established under the Data Protection Act, 2012. Their responsibilities include:\n\n• Registering data controllers and processors\n• Enforcing data protection laws\n• Investigating complaints\n• Conducting audits and inspections\n• Providing guidance on compliance\n• Imposing penalties for violations (up to GHS 250,000 or 5% of annual turnover)\n\nYou can contact them at dataprotection.org.gh to report violations or seek guidance.",
+            
+            "data protection act": "Ghana's Data Protection Act, 2012 (Act 843) is the primary law governing personal data protection. Key provisions include:\n\n• Principles of lawful, fair, and transparent processing\n• Requirements for obtaining consent\n• Data subject rights (access, correction, erasure)\n• Obligations for data controllers and processors\n• Security measures for data protection\n• Breach notification requirements (72 hours)\n• Registration with Data Protection Commission\n• Penalties for non-compliance\n\nThe Act aligns with international standards while addressing Ghana's specific context.",
+            
+            "cybersecurity act": "The Cybersecurity Act, 2020 (Act 1038) complements data protection by:\n\n• Establishing the Cyber Security Authority\n• Mandating security measures for critical infrastructure\n• Addressing cybercrime and online threats\n• Requiring incident reporting\n• Promoting cybersecurity awareness\n• Coordinating national cybersecurity strategy\n\nIt works alongside the Data Protection Act to create comprehensive digital security in Ghana.",
+            
+            "sim swap fraud": "SIM swap fraud is a common form of information misuse in Ghana. Criminals convince mobile network operators to transfer your phone number to a SIM card they control, giving them access to your calls, messages, and mobile money accounts.\n\nProtection measures:\n• Use strong PINs/passwords\n• Enable additional security features with your network\n• Monitor your accounts regularly\n• Report unauthorized transfers immediately\n• Don't share personal information or OTPs\n\nIf affected, contact your network operator and Ghana Police Cyber Crime Unit immediately.",
+            
+            "mobile money": "Mobile money security and data ethics in Ghana:\n\n• Verify transaction details before confirming\n• Never share your PIN or OTP codes\n• Use strong passwords for mobile money apps\n• Enable biometric authentication when available\n• Monitor transactions regularly\n• Report suspicious activity immediately\n• Be cautious of social engineering scams\n• Understand how providers use your transaction data\n• Review privacy policies of mobile money services\n\nProviders must comply with Data Protection Act and Bank of Ghana regulations.",
+            
+           
+            "data ethics": "Data ethics is the branch of ethics that evaluates data practices - collection, generation, analysis, and use - focusing on moral problems related to data and algorithms. Key principles include:\n\n1. Privacy & Consent: Respect individual autonomy and obtain informed consent\n2. Transparency: Be clear about data collection and use\n3. Fairness: Ensure equitable treatment across all groups\n4. Accountability: Take responsibility for data practices and their impacts\n5. Security: Protect data from unauthorized access\n6. Beneficence: Use data to benefit individuals and society\n7. Non-maleficence: Avoid causing harm through data use\n\nData ethics addresses power imbalances, discrimination, surveillance, and human rights in the digital age.",
+            
+            "gdpr": "The General Data Protection Regulation (GDPR) is the EU's comprehensive data protection law. While Ghana has its own Data Protection Act, GDPR principles influence global standards:\n\n• Lawfulness, fairness, and transparency\n• Purpose limitation\n• Data minimization\n• Accuracy\n• Storage limitation\n• Integrity and confidentiality\n• Accountability\n\nKey GDPR rights include:\n• Right to access\n• Right to rectification\n• Right to erasure ('right to be forgotten')\n• Right to data portability\n• Right to object\n\nGhanaian organizations dealing with EU citizens must comply with GDPR.",
+            
+            "consent": "Informed consent is fundamental to ethical data practices. Valid consent must be:\n\n• Freely given: No coercion or pressure\n• Specific: Clear about what's being consented to\n• Informed: Full understanding of implications\n• Unambiguous: Clear affirmative action required\n• Revocable: Can be withdrawn at any time\n\nBad practices to avoid:\n• Pre-ticked boxes\n• Bundled consent (all-or-nothing)\n• Overly complex language\n• Hidden in long terms of service\n• Implied consent without explicit action\n\nIn Ghana, the Data Protection Act requires organizations to obtain proper consent before collecting personal data.",
+            
+            "encryption": "Encryption is essential for protecting data privacy and security. It converts data into coded form that can only be read with the correct key.\n\nTypes:\n• End-to-end encryption: Only sender and recipient can read messages\n• At-rest encryption: Protects stored data\n• In-transit encryption: Protects data being transmitted\n\nBest practices:\n• Use HTTPS for websites\n• Encrypt sensitive files and databases\n• Use encrypted messaging apps (Signal, WhatsApp)\n• Enable device encryption on phones and computers\n• Use VPNs on public Wi-Fi\n• Implement strong encryption standards (AES-256)\n\nGhana's Cybersecurity Act encourages encryption for protecting sensitive data.",
+            
+            "anonymization": "Anonymization removes personally identifiable information from data, making it impossible to identify individuals. However, true anonymization is difficult:\n\nChallenges:\n• Re-identification risk: Combining datasets can reveal identities\n• Quasi-identifiers: Indirect information (age, location, gender) can identify people\n• Data utility vs. privacy trade-off\n\nTechniques:\n• Data masking: Hiding specific data elements\n• Generalization: Making data less specific\n• Pseudonymization: Replacing identifiers with artificial ones\n• Differential privacy: Adding statistical noise\n\nNote: Pseudonymization is NOT anonymization - individuals can still be re-identified with additional information.",
+            
+            "algorithmic bias": "Algorithmic bias occurs when AI systems produce systematically unfair outcomes. Types include:\n\n1. Historical Bias: Training data reflects past discrimination\n2. Representation Bias: Certain groups underrepresented in data\n3. Measurement Bias: Proxies don't accurately measure what they claim\n4. Aggregation Bias: One model for everyone ignores group differences\n5. Evaluation Bias: Testing doesn't represent real-world use\n\nIn Ghana:\n• Mobile money lending disadvantaging rural users\n• Credit scoring excluding informal economy workers\n• Facial recognition with lower accuracy for darker skin\n• Job screening undervaluing local credentials\n\nMitigation requires diverse data, regular audits, transparency, and stakeholder engagement.",
+            
+            "bias": "Bias in AI and data systems can be:\n\n• Statistical bias: Systematic errors in data or models\n• Cognitive bias: Human prejudices reflected in data/algorithms\n• Systemic bias: Institutional discrimination embedded in processes\n\nCommon sources:\n• Biased training data\n• Biased feature selection\n• Biased model design\n• Biased interpretation of results\n\nAddressing bias requires:\n• Diverse, representative data\n• Inclusive development teams\n• Regular fairness audits\n• Transparency in methods\n• Community engagement\n• Ongoing monitoring and adjustment",
+            
+            "fairness": "Algorithmic fairness has multiple definitions, sometimes in tension:\n\n1. Individual Fairness: Similar individuals treated similarly\n2. Group Fairness: Equal outcomes across demographic groups\n3. Demographic Parity: Equal selection rates across groups\n4. Equal Opportunity: Equal true positive rates\n5. Predictive Parity: Equal precision across groups\n\nNo single metric satisfies all fairness definitions simultaneously (impossibility theorems). Context matters:\n• What's fair in lending may differ from hiring\n• Stakeholder values influence fairness definitions\n• Historical injustices require consideration\n\nFairness is not just mathematical - it's fundamentally about justice and equity.",
+            
+            "transparency": "Algorithmic transparency means making AI systems understandable and accountable:\n\nLevels:\n• Data transparency: What data is used?\n• Model transparency: How does it work?\n• Outcome transparency: Why this decision?\n• Process transparency: Who's responsible?\n\nChallenges:\n• Trade secrets and competitive advantage\n• Technical complexity\n• Balancing transparency with security\n• Making explanations meaningful to non-experts\n\nGood practices:\n• Document data sources and limitations\n• Explain model logic in accessible language\n• Provide decision explanations\n• Enable appeals and human review\n• Regular external audits",
+            
+            "explainability": "AI explainability (XAI) makes machine learning models interpretable to humans:\n\nMethods:\n• Feature importance: Which inputs matter most?\n• Local explanations: Why this specific decision?\n• Global explanations: How does the model generally work?\n• Counterfactual explanations: What would change the outcome?\n\nTrade-offs:\n• More complex models (deep learning) often less explainable\n• Simple models (decision trees) more interpretable but less accurate\n• Explanation accuracy vs. human understanding\n\nImportant for:\n• Building trust\n• Debugging systems\n• Meeting regulatory requirements\n• Enabling accountability\n• Detecting bias",
+            
+            "surveillance": "Data surveillance raises significant ethical concerns:\n\nTypes:\n• Government surveillance: National security vs. privacy\n• Corporate surveillance: Behavioral tracking for profit\n• Workplace surveillance: Monitoring employees\n• Social surveillance: Peer monitoring on social media\n\nConcerns:\n• Privacy erosion\n• Chilling effects on free speech\n• Power imbalances\n• Discrimination and profiling\n• Function creep (expanding beyond original purpose)\n\nPrinciples for ethical surveillance:\n• Necessity and proportionality\n• Transparency about practices\n• Accountability mechanisms\n• Individual rights protection\n• Democratic oversight",
+            
+            "profiling": "Data profiling creates detailed user profiles from collected information:\n\nMethods:\n• Behavioral tracking (browsing, purchases)\n• Social media analysis\n• Location data\n• Combining multiple data sources\n\nUses:\n• Targeted advertising\n• Personalized content\n• Risk assessment (credit, insurance)\n• Security screening\n\nRisks:\n• Discrimination based on profiles\n• Privacy invasion\n• Inaccurate assumptions\n• Manipulation through targeted content\n• Reduced autonomy\n\nRegulations like Ghana's Data Protection Act require consent and transparency for profiling.",
+            
+            "misinformation": "Misinformation (false information shared without intent to harm) and disinformation (deliberately false information) pose serious challenges:\n\nImpacts:\n• Undermines democratic processes\n• Public health risks\n• Social polarization\n• Erosion of trust in institutions\n\nCombating strategies:\n• Media literacy education\n• Fact-checking initiatives\n• Platform accountability\n• Transparent content moderation\n• Source verification\n• Critical thinking skills\n\nIndividual actions:\n• Verify before sharing\n• Check multiple credible sources\n• Be aware of emotional manipulation\n• Report false content",
+            
+            "deepfake": "Deepfakes are AI-generated synthetic media (video, audio, images) that appear authentic:\n\nCreated using:\n• Deep learning algorithms\n• Generative Adversarial Networks (GANs)\n• Face-swapping technology\n\nRisks:\n• Political manipulation\n• Fraud and impersonation\n• Non-consensual intimate imagery\n• Erosion of trust in media\n• Reputational harm\n\nDetection:\n• Inconsistencies in lighting/shadows\n• Unnatural movements\n• Audio-visual mismatches\n• Digital forensics tools\n\nPrevention requires:\n• Digital literacy\n• Authentication technologies\n• Legal frameworks\n• Platform policies",
+            
+            "dark patterns": "Dark patterns are manipulative design choices that trick users into actions against their interests:\n\nTypes:\n• Forced continuity: Hard to cancel subscriptions\n• Sneaking: Hidden costs or items added to cart\n• Confirmshaming: Guilt-inducing language for opting out\n• Misdirection: Drawing attention away from important info\n• Privacy Zuckering: Sharing more data than intended\n• Roach motel: Easy to get in, hard to get out\n\nProtection:\n• Read carefully before clicking\n• Check what you're consenting to\n• Review privacy settings regularly\n• Use browser extensions that detect dark patterns\n• Report unethical practices",
+            
+            "data minimization": "Data minimization means collecting only necessary data for specific purposes:\n\nPrinciples:\n• Collect only what you need\n• Keep only as long as necessary\n• Use least intrusive methods\n• Delete when purpose is fulfilled\n\nBenefits:\n• Reduced privacy risks\n• Lower security breach impact\n• Compliance with regulations\n• Lower storage costs\n• Builds trust\n\nViolations:\n• Collecting 'just in case' data\n• Indefinite retention\n• Sharing beyond stated purpose\n• Excessive permissions requests\n\nGhana's Data Protection Act requires data minimization as a core principle.",
+            
+            "data breach": "A data breach is unauthorized access to confidential data. In Ghana:\n\nOrganizations must:\n• Report to Data Protection Commission within 72 hours\n• Notify affected individuals\n• Document the breach\n• Take corrective action\n\nAs an individual:\n• Change passwords immediately\n• Monitor financial accounts\n• Enable fraud alerts\n• Document all communications\n• Report if organization fails to handle properly\n\nPrevention:\n• Strong access controls\n• Encryption\n• Regular security audits\n• Employee training\n• Incident response plans",
+            
+            "report misuse": "To report information misuse in Ghana:\n\n1. Cybercrimes (fraud, phishing, SIM swap): Ghana Police Service Cyber Crime Unit\n2. Data privacy violations: Data Protection Commission\n3. Online harassment: Platform reporting + police if serious\n4. Misinformation: Platform reporting tools\n5. SIM swap fraud: Mobile network operator + police\n\nDocument evidence:\n• Screenshots\n• Messages\n• Transaction records\n• Dates and times\n• Witness information\n\nSeek legal advice for serious violations or damages.",
+            
+            "cookies": "Cookies are small data files stored on your device by websites:\n\nTypes:\n• Essential: Required for site functionality\n• Functional: Remember preferences\n• Analytics: Track site usage\n• Advertising: Track across sites for targeted ads\n\nConcerns:\n• Privacy invasion through tracking\n• Third-party data sharing\n• Profile building\n• Limited user control\n\nBest practices:\n• Reject non-essential cookies\n• Clear cookies regularly\n• Use privacy-focused browsers\n• Install cookie-blocking extensions\n• Review cookie policies\n\nEthical sites should:\n• Allow granular cookie choices\n• Make rejection easy\n• Explain cookie purposes clearly\n• Respect user preferences",
+            
+            "two-factor authentication": "Two-factor authentication (2FA) adds security beyond passwords:\n\nMethods:\n• SMS codes (least secure)\n• Authenticator apps (better)\n• Hardware keys (most secure)\n• Biometrics\n\nBenefits:\n• Protects even if password compromised\n• Prevents unauthorized access\n• Required by many regulations\n\nEnable 2FA for:\n• Email accounts\n• Banking and mobile money\n• Social media\n• Cloud storage\n• Any account with sensitive data\n\nNote: SMS 2FA vulnerable to SIM swap attacks - use app-based when possible.",
+            
+            "gdpr compliance": "GDPR compliance applies to organizations that:\n• Operate in the EU\n• Offer goods/services to EU residents\n• Monitor behavior of EU residents\n\nKey requirements:\n• Lawful basis for processing\n• Data protection by design\n• Privacy impact assessments\n• Data protection officer (for some)\n• Breach notification (72 hours)\n• Data subject rights fulfillment\n• Records of processing activities\n\nGhanaian companies serving EU customers must comply. Fines can reach €20 million or 4% of global revenue.",
+            
+            "ethical ai": "Ethical AI development requires:\n\nPrinciples:\n• Fairness: No discrimination\n• Transparency: Explainable decisions\n• Privacy: Protect personal data\n• Accountability: Clear responsibility\n• Safety: Prevent harm\n• Beneficence: Promote wellbeing\n\nPractices:\n• Diverse development teams\n• Stakeholder engagement\n• Impact assessments\n• Regular audits\n• Human oversight\n• Appeal mechanisms\n• Continuous monitoring\n\nChallenges:\n• Balancing competing values\n• Technical limitations\n• Profit pressures\n• Regulatory gaps\n\nEthical AI is not just technical - it requires ongoing human judgment and societal input."
+        };
+
+        function toggleChat() {
+            document.getElementById('chatWindow').classList.toggle('active');
+        }
+
+     
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                    // Close mobile menu if open
+                    const navLinks = document.getElementById('navLinks');
+                    navLinks.classList.remove('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
