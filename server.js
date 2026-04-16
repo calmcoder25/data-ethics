@@ -65,12 +65,14 @@ async function handleChatRequest(req, res) {
                 body: JSON.stringify(payload)
             });
 
-            const text = await upstream.text();
+            if (!upstream.ok) {
+                const errorText = await upstream.text();
+                sendJson(res, upstream.status, { error: { message: errorText } });
+                return;
+            }
 
-            res.writeHead(upstream.status, {
-                'Content-Type': 'application/json; charset=utf-8'
-            });
-            res.end(text);
+            const responseData = await upstream.json();
+            sendJson(res, upstream.status, responseData);
         } catch (error) {
             sendJson(res, 500, { error: { message: error.message || 'Server error' } });
         }
