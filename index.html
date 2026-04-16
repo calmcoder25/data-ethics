@@ -1636,7 +1636,7 @@
         }
 
     
-        const CHAT_MODEL = 'gemini-2.5-flash-lite';
+        const CHAT_MODEL = 'gemini-1.5-flash';
         const chatHistory = [];
 
         const chatInputEl  = document.getElementById('chatInput');
@@ -1729,8 +1729,15 @@
                 });
 
                 if (!res.ok) {
-                    const err = await res.json();
-                    throw new Error(err.error?.message || 'API error');
+                    let errorMessage = 'API error';
+                    try {
+                        const err = await res.json();
+                        errorMessage = err.error?.message || 'API error';
+                    } catch {
+                        const text = await res.text();
+                        errorMessage = text || 'API error';
+                    }
+                    throw new Error(errorMessage);
                 }
 
                 const data = await res.json();
